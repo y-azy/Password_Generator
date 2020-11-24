@@ -106,7 +106,7 @@ var typesCount = passLc + passUc + passNums + passSpecialChar;
 
 console.log('typesCount: ', typesCount);
 
-var typesArray = [{passLc}, {passUc}, {passNums}, {passSpecialChar}].filter(item => Object.values(item)[0]);
+var typesArray = [{ lowercase: passLc }, { uppercase: passUc }, { numbs: passNums }, { charspecial: passSpecialChar }].filter(item => Object.values(item)[0]);
 
 console.log('typesArrays ', typesArray);
 
@@ -122,8 +122,6 @@ passwordGenerated += passwordCriteria[funcName]();
 }
 console.log(passwordGenerated);
 }
-
-
 
 
 // Generator functions 
@@ -163,7 +161,7 @@ console.log(specialCharRandom());
 
 // Write password to the #password input
 function writePassword() {
-  var password = generatePassword();
+  var password = generatedPassword();
 
   passwordText.value = password;
 
