@@ -120,7 +120,7 @@ passwordGenerated += passwordCriteria[funcName]();
 
 });
 }
-
+console.log(passwordGenerated);
 }
 
 
