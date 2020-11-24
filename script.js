@@ -96,13 +96,12 @@ if (!passLc && !passUc && !passNums && !passSpecialChar) {
 
 generatePassword(passLength, passLc, passUc, passNums, passSpecialChar);
 
-
 }
 
 //Generate Password function
 
 function generatePassword (passLength, passLc, passUc, passNums, passSpecialChar) {
-var generatedPassword = ""; 
+var passwordGenerated = ''; 
 var typesCount = passLc + passUc + passNums + passSpecialChar;
 
 console.log('typesCount: ', typesCount);
@@ -112,16 +111,17 @@ var typesArray = [{passLc}, {passUc}, {passNums}, {passSpecialChar}].filter(item
 console.log('typesArrays ', typesArray);
 
 for (i = 0; i < passLength; i += typesCount) {
-
 typesArray.forEach(type => {
-  var functionName = Object.keys(types)[0];
+var funcName = Object.keys(type)[0];
+
+console.log('functionName ', funcName);
+
+passwordGenerated += passwordCriteria[funcName]();
+
 });
-
 }
 
-
 }
-
 
 
 
