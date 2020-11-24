@@ -1,139 +1,151 @@
 // Global variables
+
 var generateBtn = document.querySelector("#generate");
-var passwordText = document.querySelector("#password");
-
-
+var passwordText = document.getElementById("password");
 
 // Object for the generator functions below (line 103 - 144)
 
 var passwordCriteria = {
 
-  lowercase : lowerCaseRandom,
-  uppercase : upperCaseRandom,
-  numbs : numberRandom,
-  charspecial : specialCharRandom
-  
-  };
+  lowercase: lowerCaseRandom,
+  uppercase: upperCaseRandom,
+  numbs: numberRandom,
+  charspecial: specialCharRandom
 
+};
 
 // Add event listener to generate button to start with prompts 
 
 generateBtn.addEventListener("click", (event) => {
-   event.preventDefault();
+  event.preventDefault();
   criteriaCheck();
 });
 
 // Collect user password criteria
 
 function criteriaCheck() {
-var passLength = prompt("Please select a length of your password!");
+  var passLength = prompt("Please select the length for your password!");
 
-passLength = +passLength;
+  passLength = +passLength;
 
-console.log(passLength);
-console.log(typeof passLength);
+  console.log(passLength);
+  console.log(typeof passLength);
 
-if (passLength >= 8 && passLength <= 128) {
+  if (passLength >= 8 && passLength <= 128) {
 
-var passLc = confirm("Would you like to add lowercase alphabets to your password?");
+    var passLc = confirm("Would you like to add lowercase alphabets to your password?");
 
-if (passLc) {
+    if (passLc) {
 
-passLc = passLc;
-console.log(passLc);
-} else {
+      passLc = passLc;
+      console.log(passLc);
+    } else {
 
-passLc === false;
-console.log(passLc);
-}
+      passLc === false;
+      console.log(passLc);
+    }
 
-var passUc = confirm("Would you like to add uppercase alphabets to your password?");
+    var passUc = confirm("Would you like to add uppercase alphabets to your password?");
 
-if (passUc) {
+    if (passUc) {
 
-  passUc = passUc;
-  console.log(passUc);
+      passUc = passUc;
+      console.log(passUc);
+    } else {
+
+      passUc === false;
+      console.log(passUc);
+    }
+
+    var passNums = confirm("Would you like to add numbers to your password?");
+
+    if (passNums) {
+
+      passNums = passNums;
+      console.log(passNums);
+    } else {
+
+      passNums === false;
+      console.log(passNums);
+    }
+
+    var passSpecialChar = confirm("Would you like to add special characters to your password?");
+
+    if (passSpecialChar) {
+
+      passSpecialChar = passSpecialChar;
+      console.log(passSpecialChar);
+    } else {
+
+      passSpecialChar === false;
+      console.log(passSpecialChar);
+    }
+
+    if (!passLc && !passUc && !passNums && !passSpecialChar) {
+
+      alert("Please choose atleast one password criteria in order to generate your new password!!");
+    }
+
   } else {
-  
-    passUc === false;
-  console.log(passUc);
+
+    alert("Please select password length of at least 8 characters and no more than 128 characters!!");
+
   }
 
-var passNums = confirm("Would you like to add numbers to your password?");
+  generatePassword(passLength, passLc, passUc, passNums, passSpecialChar);
 
-if (passNums) {
+}
 
-  passNums = passNums;
-  console.log(passNums);
-  } else {
-  
-    passNums === false;
-  console.log(passNums);
+//Generate Password function (takes the criteria check and generates a password for the user)
+
+function generatePassword(passLength, passLc, passUc, passNums, passSpecialChar) {
+  var passwordGenerated = '';
+  var typesCount = passLc + passUc + passNums + passSpecialChar;
+
+  console.log('typesCount: ', typesCount);
+
+  var typesArray = [{
+    lowercase: passLc
+  }, {
+    uppercase: passUc
+  }, {
+    numbs: passNums
+  }, {
+    charspecial: passSpecialChar
+  }].filter(item => Object.values(item)[0]);
+
+  console.log('typesArrays ', typesArray);
+
+  for (i = 0; i < passLength; i += typesCount) {
+    typesArray.forEach(type => {
+      var funcName = Object.keys(type)[0];
+
+      console.log('functionName ', funcName);
+
+      passwordGenerated += passwordCriteria[funcName]();
+
+    });
   }
 
-var passSpecialChar = confirm("Would you like to add special characters to your password?");
+  // Display password to the in the text box (UI) 
 
-if (passSpecialChar) {
+  var userFinalPassword = passwordGenerated.slice(0, passLength);
 
-  passSpecialChar = passSpecialChar;
-  console.log(passSpecialChar);
-  } else {
-  
-    passSpecialChar === false;
-  console.log(passSpecialChar);
-  }
-
-if (!passLc && !passUc && !passNums && !passSpecialChar) {
-
-  alert("Please choose atleast one password criteria in order to generate your new password!!");
-}
-
-} else {
-
-  alert("Please select password length of at least 8 characters and no more than 128 characters");
+  passwordText.textContent = userFinalPassword;
 
 }
 
-generatePassword(passLength, passLc, passUc, passNums, passSpecialChar);
 
-}
+// Generator functions (randomly chooses lowercase, uppercase, numbers and special characters)
 
-//Generate Password function
-
-function generatePassword (passLength, passLc, passUc, passNums, passSpecialChar) {
-var passwordGenerated = ''; 
-var typesCount = passLc + passUc + passNums + passSpecialChar;
-
-console.log('typesCount: ', typesCount);
-
-var typesArray = [{ lowercase: passLc }, { uppercase: passUc }, { numbs: passNums }, { charspecial: passSpecialChar }].filter(item => Object.values(item)[0]);
-
-console.log('typesArrays ', typesArray);
-
-for (i = 0; i < passLength; i += typesCount) {
-typesArray.forEach(type => {
-var funcName = Object.keys(type)[0];
-
-console.log('functionName ', funcName);
-
-passwordGenerated += passwordCriteria[funcName]();
-
-});
-}
-console.log(passwordGenerated);
-}
-
-
-// Generator functions 
-
-function lowerCaseRandom () {
+function lowerCaseRandom() {
 
   return String.fromCharCode(Math.floor(Math.random() * 26) + 97);
 
 }
 console.log(lowerCaseRandom());
 
-function upperCaseRandom () {
+function upperCaseRandom() {
 
   return String.fromCharCode(Math.floor(Math.random() * 26) + 65);
 
@@ -142,7 +154,7 @@ function upperCaseRandom () {
 console.log(upperCaseRandom());
 
 
-function numberRandom () {
+function numberRandom() {
 
   return String.fromCharCode(Math.floor(Math.random() * 10) + 48);
 
@@ -150,19 +162,10 @@ function numberRandom () {
 
 console.log(numberRandom());
 
-function specialCharRandom () {
+function specialCharRandom() {
   var specialCHar = "_-)(*&^%$#@!~`}{][|:;'><,./?'";
   return specialCHar[Math.floor(Math.random() * specialCHar.length)];
 
 }
 
 console.log(specialCharRandom());
-
-
-// Write password to the #password input
-function writePassword() {
-  var password = generatedPassword();
-
-  passwordText.value = password;
-
-}
